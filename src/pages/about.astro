@@ -1,0 +1,34 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+// Your photo: put your image at public/avatar.jpg (or .png). It will show at /avatar.jpg
+const avatarSrc = "/avatar.jpg";
+---
+<BaseLayout title="About" description="About Gustavo Barretto">
+  <div class="space-y-10">
+    <h1 class="text-2xl font-semibold text-accent">About</h1>
+
+    <div class="flex flex-col sm:flex-row gap-8 items-start">
+      <div class="shrink-0">
+        <!-- Upload your picture to public/avatar.jpg (or use public/avatar.png and set avatarSrc above to /avatar.png) -->
+        <img
+          src={avatarSrc}
+          alt="Gustavo Barretto"
+          width="160"
+          height="160"
+          class="rounded-full w-40 h-40 object-cover border border-border"
+        />
+      </div>
+      <div class="space-y-4 text-muted leading-relaxed min-w-0">
+        <p>
+          I like to build things, especially those that make a difference.
+        </p>
+        <p>
+          Currently Software Engineer at <a href="https://x.com/mercadolibre" target="_blank" rel="noopener noreferrer" class="text-accent hover:underline">@mercadolibre</a>, Latin America’s largest e-commerce with over 200 million users and more than 5,000 microservices integrated on the Fury platform—where I work, mainly providing IaC (Infrastructure as Code) in a custom IDP (Internal Developer Platform) for Mercado Libre developers.
+        </p>
+        <p>
+          I’ve been a professor of Political Science and Constitutional Law, I’ve studied Economics, and I’m a Law graduate, as well as a Computer Science graduate—always wanting to make a difference wherever I go.
+        </p>
+      </div>
+    </div>
+  </div>
+</BaseLayout>

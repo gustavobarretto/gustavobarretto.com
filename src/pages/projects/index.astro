@@ -1,0 +1,54 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+
+const projects = (await getCollection("projects")).sort(
+  (a, b) => (b.data.date?.valueOf() ?? 0) - (a.data.date?.valueOf() ?? 0)
+);
+---
+<BaseLayout title="Projects" description="Projects and links">
+  <div class="space-y-10">
+    <h1 class="text-2xl font-semibold text-accent">Projects</h1>
+    <p class="text-muted">Things I’ve built or contributed to. Each links to the project or source.</p>
+    <ul class="space-y-4">
+      {projects.length === 0 ? (
+        <li class="text-muted">No projects listed yet.</li>
+      ) : (
+        projects.map((proj) => (
+          <li>
+            <div class="block p-5 rounded-lg border border-border hover:border-stone-400 transition-colors">
+              {proj.data.logo && (
+                <div class="mb-4 flex items-center justify-start">
+                  <img src={proj.data.logo} alt="" class="h-12 w-auto object-contain" />
+                </div>
+              )}
+              {proj.data.link ? (
+                <a href={proj.data.link} target="_blank" rel="noopener noreferrer" class="font-medium text-accent hover:underline">
+                  {proj.data.title}
+                </a>
+              ) : (
+                <span class="font-medium text-accent">{proj.data.title}</span>
+              )}
+              <p class="text-muted text-sm mt-2">{proj.data.description}</p>
+              {proj.data.linkSecondary && proj.data.linkSecondaryLabel && (
+                <a
+                  href={proj.data.linkSecondary}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-accent text-sm mt-2 inline-block hover:underline"
+                >
+                  {proj.data.linkSecondaryLabel} →
+                </a>
+              )}
+              {proj.data.date && (
+                <time class="text-muted text-xs mt-2 block" datetime={proj.data.date.toISOString()}>
+                  {proj.data.date.toLocaleDateString("en-US", { year: "numeric", month: "short" })}
+                </time>
+              )}
+            </div>
+          </li>
+        ))
+      )}
+    </ul>
+  </div>
+</BaseLayout>

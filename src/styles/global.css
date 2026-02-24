@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --surface: #fafaf9;
+  --border: #e7e5e4;
+  --muted: #78716c;
+  --accent: #1c1917;
+  --header-bg: #e8e6e5;
+  --header-text: #57534e;
+}
+
+.dark {
+  --surface: #0a0a0a;
+  --border: #404040;
+  --muted: #a3a3a3;
+  --accent: #fafafa;
+  --header-bg: #171717;
+  --header-text: #d6d3d1;
+}
+
+@layer base {
+  html {
+    @apply antialiased;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+  body {
+    @apply bg-surface text-accent;
+  }
+}

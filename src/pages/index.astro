@@ -1,0 +1,72 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+import { SITE } from "@/config";
+
+const posts = (await getCollection("blog"))
+  .filter((p) => !p.data.draft)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 5);
+
+const projects = (await getCollection("projects"))
+  .sort((a, b) => (b.data.date?.valueOf() ?? 0) - (a.data.date?.valueOf() ?? 0))
+  .slice(0, 4);
+---
+<BaseLayout title="" description={SITE.desc}>
+  <div class="space-y-16">
+    <section class="space-y-3">
+      <p class="text-muted leading-relaxed">
+        Welcome. This is where I share insights, opinions, and projects—completed or in progress. Feel free to reach out anytime.
+      </p>
+    </section>
+
+    {projects.length > 0 && (
+      <section>
+        <h2 class="text-sm font-medium text-muted uppercase tracking-wide mb-4">Projects</h2>
+        <ul class="space-y-4">
+          {projects.map((proj) => (
+            <li>
+              <div class="block p-4 rounded-lg border border-border hover:border-stone-400 transition-colors">
+                {proj.data.logo && (
+                  <div class="mb-3">
+                    <img src={proj.data.logo} alt="" class="h-10 w-auto object-contain" />
+                  </div>
+                )}
+                {proj.data.link ? (
+                  <a href={proj.data.link} target="_blank" rel="noopener noreferrer" class="font-medium text-accent hover:underline">
+                    {proj.data.title}
+                  </a>
+                ) : (
+                  <span class="font-medium text-accent">{proj.data.title}</span>
+                )}
+                <p class="text-muted text-sm mt-1">{proj.data.description}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
+        <a href="/projects" class="inline-block mt-3 text-sm text-muted hover:text-accent">All projects →</a>
+      </section>
+    )}
+
+    <section>
+      <h2 class="text-sm font-medium text-muted uppercase tracking-wide mb-4">Recent posts</h2>
+      <ul class="space-y-3">
+        {posts.length === 0 ? (
+          <li class="text-muted">No posts yet.</li>
+        ) : (
+          posts.map((post) => (
+            <li>
+              <a href={`/blog/${post.slug}`} class="group">
+                <span class="font-medium text-accent group-hover:underline">{post.data.title}</span>
+                <time class="text-muted text-sm ml-2" datetime={post.data.pubDate.toISOString()}>
+                  {post.data.pubDate.toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" })}
+                </time>
+              </a>
+            </li>
+          ))
+        )}
+      </ul>
+      <a href="/blog" class="inline-block mt-3 text-sm text-muted hover:text-accent">All posts →</a>
+    </section>
+  </div>
+</BaseLayout>
