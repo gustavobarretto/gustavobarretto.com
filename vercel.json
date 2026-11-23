@@ -3,7 +3,7 @@
   "outputDirectory": "dist",
   "framework": "astro",
   "redirects": [
-    { "source": "/", "destination": "/work", "permanent": true },
+    { "source": "/", "destination": "/devlogs", "permanent": true },
     { "source": "/projects", "destination": "/work", "permanent": true },
     { "source": "/about", "destination": "/backstory", "permanent": true },
     { "source": "/blog", "destination": "/devlogs", "permanent": true },

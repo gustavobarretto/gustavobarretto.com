@@ -25,11 +25,11 @@ export default defineConfig({
         const url = item.url;
         item.changefreq = ChangeFreqEnum.MONTHLY;
         item.priority = 0.5;
-        if (url.endsWith("/work")) {
+        if (url.endsWith("/devlogs")) {
           item.priority = 1.0;
           item.changefreq = ChangeFreqEnum.DAILY;
           item.lastmod = new Date().toISOString();
-        } else if (url.endsWith("/backstory") || url.endsWith("/devlogs") || url.endsWith("/work")) {
+        } else if (url.endsWith("/work") || url.endsWith("/backstory")) {
           item.priority = 0.9;
           item.changefreq = ChangeFreqEnum.WEEKLY;
         } else if (url.includes("/devlogs/")) {

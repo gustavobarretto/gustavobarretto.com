@@ -1,6 +1,6 @@
 # gustavobarretto.com
 
-Gustavo Barretto's personal website: Work, Devlogs, and Backstory. Built with
+Gustavo Barretto's personal website: Devlogs, Work, and Backstory. Built with
 Astro 5, TypeScript, Tailwind CSS, and content collections. The design uses a
 paper palette, teal accents, and a responsive header.
 
@@ -87,7 +87,7 @@ Each post is available at `/devlogs/<id>`, including nested content paths.
 
 ## Routes and deployment
 
-- `/` opens `/work`.
+- `/` opens `/devlogs`.
 - `/projects` redirects to `/work`.
 - `/blog` and `/blog/<id>` redirect to their `/devlogs` replacements.
 - `/about` redirects to `/backstory`.

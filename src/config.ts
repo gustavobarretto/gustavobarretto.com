@@ -2,7 +2,7 @@ export const SITE = {
   website: "https://gustavobarretto.com",
   author: "Gustavo Barretto",
   title: "Gustavo Barretto",
-  desc: "Work, devlogs, and the backstory of Gustavo Barretto.",
+  desc: "Devlogs, work, and the backstory of Gustavo Barretto.",
   lang: "en",
   postPerPage: 10,
 } as const;
@@ -19,7 +19,7 @@ export const SOCIALS = [
 ] as const;
 
 export const NAV_LINKS = [
-  { href: "/work", label: "Work" },
   { href: "/devlogs", label: "Devlogs" },
+  { href: "/work", label: "Work" },
   { href: "/backstory", label: "Backstory" },
 ] as const;

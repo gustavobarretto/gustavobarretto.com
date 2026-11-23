@@ -13,8 +13,9 @@ point when updating these instructions.
   experience and personal projects, with period and organization metadata.
 - Devlogs live in `src/content/devlogs/` as Markdown or MDX files, with optional
   categories and a draft flag. Do not publish sample posts or invented categories.
-- The public sections are Work, Devlogs, and Backstory. Legacy URLs redirect to
-  their replacements. Keep the paper palette and responsive layout.
+- The public sections are Devlogs, Work, and Backstory. Devlogs is the landing
+  page, and legacy URLs redirect to their replacements. Keep the paper palette
+  and responsive layout.
 - The Work introduction is configured in `PROFILE.intro` in `src/config.ts`.
   Use only biographical details and work history supplied by the user.
 - Keep website copy in English unless the user requests another language.
