@@ -16,9 +16,13 @@ point when updating these instructions.
 - The public sections are Devlogs, Work, and Backstory. Devlogs is the landing
   page, and legacy URLs redirect to their replacements. Keep the paper palette
   and responsive layout.
-- The Work introduction is configured in `PROFILE.intro` in `src/config.ts`.
+- The Work introductions and interface text live in `src/messages.ts`.
   Use only biographical details and work history supplied by the user.
-- Keep website copy in English unless the user requests another language.
+- Add and update all visitor-facing copy in English, Brazilian Portuguese, and
+  Spanish in the same change. This includes interface text, Work and Backstory
+  entries, and Devlog titles, summaries, categories, and post bodies.
+- Give the three versions of each Devlog the same `translationKey` and verify
+  that the language switcher reaches the corresponding content.
 - Communicate with the user in the language they use.
 
 ## Working practices

@@ -23,10 +23,9 @@ validation. Avoid committing incidental changes to bundled dependencies or cache
 
 ## Introduction and Backstory
 
-- Edit `PROFILE.intro` in `src/config.ts` to change the short introduction on Work.
-- Navigation and social links are configured in the same file.
-- Edit `src/pages/backstory.astro` for the longer biography; the photo is
-  `public/avatar.jpg`.
+- Edit `src/messages.ts` to change the introduction, biography, or menu labels.
+- Social links are configured in `src/config.ts`.
+- The Backstory photo is `public/avatar.jpg`.
 - The introduction currently reuses the existing biography's opening sentence while
   the owner prepares the final introduction. Do not invent work history.
 
@@ -55,6 +54,10 @@ include `period`, `date`, `organizationUrl`, `kind` (defaults to `project`),
 `linkSecondaryLabel`. The `role` field is the right-hand heading; when absent,
 `title` is used. `period` is the displayed date label. `date` controls ordering,
 with undated entries last. Each highlight has a `title` and `description`.
+
+Work entries use English at the top level, with localized text under
+`translations.pt-BR` and `translations.es`. Dates used for sorting and URLs
+are shared.
 
 Use `initiatives` to group several contributions under one employer or project.
 Each initiative has a `title` and `description`, plus an optional `period`,
@@ -92,6 +95,14 @@ and a no-results state. Without JavaScript, all published posts remain readable.
 Each post is available at `/devlogs/<id>`, including nested content paths.
 
 ## Routes and deployment
+
+English uses the original URLs. Brazilian Portuguese and Spanish use
+`/pt-br` and `/es` prefixes. The language switch links to the same section.
+
+Devlog frontmatter accepts `locale` (`en` by default, `pt-BR`, or `es`).
+Use a shared `translationKey` across files for different translations of the
+same post. Give the files distinct names. Without a published translation, the
+switcher opens the chosen language's devlog index. Each language has an RSS feed.
 
 - `/` opens `/devlogs`.
 - `/projects` redirects to `/work`.
