@@ -18,8 +18,7 @@ const categories = [...new Set(posts.flatMap((post) => post.data.categories))]
   </div>
   {posts.length === 0 ? (
     <div class="empty-state">
-      <h2>Nothing here. Yet.</h2>
-      <p>The first devlog is still to come. When there’s something worth sharing, you’ll find it here.</p>
+      <h2>No devlogs yet</h2>
     </div>
   ) : (
     <>

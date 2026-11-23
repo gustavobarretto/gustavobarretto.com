@@ -2,7 +2,7 @@
 
 Gustavo Barretto's personal website: Work, Devlogs, and Backstory. Built with
 Astro 5, TypeScript, Tailwind CSS, and content collections. The design uses a
-paper/off-white palette, a desktop sidebar, and a mobile header.
+paper palette, teal accents, and a responsive header.
 
 ## Development
 
@@ -21,13 +21,13 @@ dependency directories and generated Astro files. Run `npm ci` before developmen
 to replace the bundled dependencies, or use an isolated clean environment for
 validation. Avoid committing incidental changes to bundled dependencies or caches.
 
-## Sidebar and Backstory
+## Introduction and Backstory
 
-- Edit `PROFILE.intro` in `src/config.ts` to change the short sidebar introduction.
+- Edit `PROFILE.intro` in `src/config.ts` to change the short introduction on Work.
 - Navigation and social links are configured in the same file.
 - Edit `src/pages/backstory.astro` for the longer biography; the photo is
   `public/avatar.jpg`.
-- The sidebar currently reuses the existing biography's opening sentence while
+- The introduction currently reuses the existing biography's opening sentence while
   the owner prepares the final introduction. Do not invent work history.
 
 ## Work

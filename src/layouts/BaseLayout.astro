@@ -1,5 +1,5 @@
 ---
-import { NAV_LINKS, PROFILE, SITE, SOCIALS } from "@/config";
+import { NAV_LINKS, SITE, SOCIALS } from "@/config";
 import "../styles/global.css";
 
 interface Props { title: string; description?: string; }
@@ -12,7 +12,7 @@ const pathname = Astro.url.pathname.replace(/\/$/, "") || "/";
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
-    <meta name="theme-color" content="#f7f4e8" />
+    <meta name="theme-color" content="#f6f3eb" />
     <title>{title ? `${title} · ${SITE.title}` : SITE.title}</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site)} />
@@ -26,33 +26,35 @@ const pathname = Astro.url.pathname.replace(/\/$/, "") || "/";
   <body>
     <a class="skip-link" href="#main-content">Skip to content</a>
     <div class="site-shell">
-      <aside class="sidebar" aria-label="Gustavo Barretto">
-        <a class="wordmark" href="/work" aria-label="Gustavo Barretto — Work">
-          <span>Gustavo</span><span>Barretto<span class="name-period">.</span></span>
-        </a>
-        <nav class="main-nav" aria-label="Main navigation">
-          {NAV_LINKS.map((link) => (
-            <a href={link.href} aria-current={pathname === link.href || pathname.startsWith(`${link.href}/`) ? "page" : undefined}>{link.label}</a>
-          ))}
-        </nav>
-        <p class="sidebar-intro">{PROFILE.intro}</p>
-        <div class="sidebar-bottom">
+      <header class="site-header">
+        <div class="site-header-inner site-width">
+          <a class="wordmark" href="/work" aria-label="Gustavo Barretto — Work">
+            <span class="monogram" aria-hidden="true">GB</span>
+            <span>Gustavo Barretto</span>
+          </a>
+          <nav class="main-nav" aria-label="Main navigation">
+            {NAV_LINKS.map((link) => (
+              <a href={link.href} aria-current={pathname === link.href || pathname.startsWith(`${link.href}/`) ? "page" : undefined}>{link.label}</a>
+            ))}
+          </nav>
+          <button type="button" id="theme-toggle" aria-label="Switch to dark mode" aria-pressed="false">
+            <span class="theme-swatch" aria-hidden="true"></span><span id="theme-label">Dark mode</span>
+          </button>
+        </div>
+      </header>
+      <main id="main-content" tabindex="-1" class="main-content site-width">
+        <slot />
+      </main>
+      <footer class="site-footer site-width">
+        <div class="site-footer-inner">
+          <small>© {new Date().getFullYear()} Gustavo Barretto</small>
           <ul class="social-links" aria-label="Find me elsewhere">
             {SOCIALS.map((social) => (
               <li><a href={social.href} target={social.icon === "mail" ? undefined : "_blank"} rel={social.icon === "mail" ? undefined : "noopener noreferrer"}>{social.name === "Twitter" ? "X" : social.name}</a></li>
             ))}
           </ul>
-          <div class="sidebar-footer">
-            <small>© {new Date().getFullYear()} Gustavo Barretto</small>
-            <button type="button" id="theme-toggle" aria-label="Switch to dark mode" aria-pressed="false">
-              <span class="theme-swatch" aria-hidden="true"></span><span id="theme-label">Dark mode</span>
-            </button>
-          </div>
         </div>
-      </aside>
-      <main id="main-content" tabindex="-1" class="main-content">
-        <div class="content-column"><slot /></div>
-      </main>
+      </footer>
     </div>
     <script>
       const toggle = document.getElementById("theme-toggle");
@@ -61,6 +63,7 @@ const pathname = Astro.url.pathname.replace(/\/$/, "") || "/";
         const dark = document.documentElement.classList.contains("dark");
         toggle?.setAttribute("aria-pressed", String(dark));
         toggle?.setAttribute("aria-label", `Switch to ${dark ? "light" : "dark"} mode`);
+        document.querySelector('meta[name="theme-color"]')?.setAttribute("content", dark ? "#1a2421" : "#f6f3eb");
         if (label) label.textContent = dark ? "Light mode" : "Dark mode";
       }
       updateThemeButton();
