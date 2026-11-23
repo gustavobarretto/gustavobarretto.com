@@ -1,82 +1,73 @@
 ---
-import { NAV_LINKS, SOCIALS } from "@/config";
-import SocialIcon from "@/components/SocialIcon.astro";
+import { NAV_LINKS, PROFILE, SITE, SOCIALS } from "@/config";
 import "../styles/global.css";
-interface Props {
-  title: string;
-  description?: string;
-}
-const { title, description } = Astro.props;
-const siteTitle = title ? `${title} · Gustavo Barretto` : "Gustavo Barretto";
-const desc = description ?? "Personal website — projects and blog.";
+
+interface Props { title: string; description?: string; }
+const { title, description = SITE.desc } = Astro.props;
+const pathname = Astro.url.pathname.replace(/\/$/, "") || "/";
 ---
 <!doctype html>
-<html lang="en">
+<html lang={SITE.lang}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content={desc} />
-    <title>{siteTitle}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#f7f4e8" />
+    <title>{title ? `${title} · ${SITE.title}` : SITE.title}</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site)} />
+    <link rel="alternate" type="application/rss+xml" title="Gustavo Barretto — Devlogs" href="/rss.xml" />
     <script is:inline>
-      (function() {
-        const stored = localStorage.getItem('theme');
-        if (stored === 'dark') document.documentElement.classList.add('dark');
-        else document.documentElement.classList.remove('dark');
-      })();
+      try {
+        document.documentElement.classList.toggle("dark", localStorage.getItem("theme") === "dark");
+      } catch {}
     </script>
   </head>
-  <body class="min-h-screen flex flex-col">
-    <header class="border-b border-border bg-[var(--header-bg)]">
-      <nav class="max-w-2xl mx-auto px-6 py-3 flex flex-wrap justify-between items-center gap-2">
-        <a href="/" class="text-2xl font-medium text-accent hover:opacity-80 transition-opacity">Gustavo Barretto</a>
-        <div class="flex flex-wrap items-center gap-6 sm:gap-8 [color:var(--header-text)]">
-          <ul class="flex gap-6 sm:gap-8">
-            {NAV_LINKS.map((link) => (
-              <li>
-                <a href={link.href} class="hover:text-accent transition-colors">{link.label}</a>
-              </li>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <div class="site-shell">
+      <aside class="sidebar" aria-label="Gustavo Barretto">
+        <a class="wordmark" href="/work" aria-label="Gustavo Barretto — Work">
+          <span>Gustavo</span><span>Barretto<span class="name-period">.</span></span>
+        </a>
+        <nav class="main-nav" aria-label="Main navigation">
+          {NAV_LINKS.map((link) => (
+            <a href={link.href} aria-current={pathname === link.href || pathname.startsWith(`${link.href}/`) ? "page" : undefined}>{link.label}</a>
+          ))}
+        </nav>
+        <p class="sidebar-intro">{PROFILE.intro}</p>
+        <div class="sidebar-bottom">
+          <ul class="social-links" aria-label="Find me elsewhere">
+            {SOCIALS.map((social) => (
+              <li><a href={social.href} target={social.icon === "mail" ? undefined : "_blank"} rel={social.icon === "mail" ? undefined : "noopener noreferrer"}>{social.name === "Twitter" ? "X" : social.name}</a></li>
             ))}
           </ul>
-          <button
-            type="button"
-            id="theme-toggle"
-            aria-label="Toggle light/dark theme"
-            class="p-2 rounded-md hover:text-accent transition-colors border border-transparent hover:border-border"
-          >
-            <span id="theme-icon-light" class="hidden dark:inline" aria-hidden="true">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
-            </span>
-            <span id="theme-icon-dark" class="inline dark:hidden" aria-hidden="true">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-            </span>
-          </button>
-          <ul class="flex gap-6 sm:gap-8 text-sm [color:var(--header-text)]">
-            {SOCIALS.map((s) => (
-              <li>
-                <SocialIcon href={s.href} name={s.name} icon={s.icon} />
-              </li>
-            ))}
-          </ul>
+          <div class="sidebar-footer">
+            <small>© {new Date().getFullYear()} Gustavo Barretto</small>
+            <button type="button" id="theme-toggle" aria-label="Switch to dark mode" aria-pressed="false">
+              <span class="theme-swatch" aria-hidden="true"></span><span id="theme-label">Dark mode</span>
+            </button>
+          </div>
         </div>
-      </nav>
-    </header>
-    <main class="flex-1 max-w-2xl mx-auto w-full px-6 py-12">
-      <slot />
-    </main>
-    <footer class="border-t border-border mt-auto">
-      <div class="max-w-2xl mx-auto px-6 py-8 flex flex-wrap gap-6 justify-center">
-        {SOCIALS.map((s) => (
-          <SocialIcon href={s.href} name={s.name} icon={s.icon} />
-        ))}
-      </div>
-    </footer>
+      </aside>
+      <main id="main-content" tabindex="-1" class="main-content">
+        <div class="content-column"><slot /></div>
+      </main>
+    </div>
     <script>
-      document.getElementById('theme-toggle')?.addEventListener('click', function() {
-        const html = document.documentElement;
-        const isDark = html.classList.toggle('dark');
-        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+      const toggle = document.getElementById("theme-toggle");
+      const label = document.getElementById("theme-label");
+      function updateThemeButton() {
+        const dark = document.documentElement.classList.contains("dark");
+        toggle?.setAttribute("aria-pressed", String(dark));
+        toggle?.setAttribute("aria-label", `Switch to ${dark ? "light" : "dark"} mode`);
+        if (label) label.textContent = dark ? "Light mode" : "Dark mode";
+      }
+      updateThemeButton();
+      toggle?.addEventListener("click", () => {
+        const dark = document.documentElement.classList.toggle("dark");
+        try { localStorage.setItem("theme", dark ? "dark" : "light"); } catch {}
+        updateThemeButton();
       });
     </script>
   </body>

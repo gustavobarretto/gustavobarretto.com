@@ -1,0 +1,7 @@
+---
+import { devlogUrl, getPublishedDevlogs } from "@/lib/devlogs";
+export async function getStaticPaths() {
+  return (await getPublishedDevlogs()).map((post) => ({ params: { slug: post.id }, props: { id: post.id } }));
+}
+return Astro.redirect(devlogUrl(Astro.props.id), 301);
+---

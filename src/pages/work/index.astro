@@ -1,0 +1,35 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+
+const work = (await getCollection("work"))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf() || a.id.localeCompare(b.id));
+---
+<BaseLayout title="Work" description="Selected work, professional experience, and personal projects by Gustavo Barretto.">
+  <h1 class="section-heading">Work</h1>
+  <p class="section-intro">A selection of the things I build and contribute to.</p>
+  <ol class="work-list">
+    {work.map(({ data }) => (
+      <li class="work-entry">
+        <div class="work-meta">
+          <p class="work-period">{data.period}</p>
+          <p class="work-organization">{data.organization}</p>
+          <p class="work-kind">{data.kind === "experience" ? "Experience" : "Personal project"}</p>
+        </div>
+        <article>
+          <h2 class="work-title">
+            {data.link ? <a href={data.link} target="_blank" rel="noopener noreferrer">{data.role ?? data.title}</a> : data.role ?? data.title}
+          </h2>
+          <div class="editorial-copy">
+            <p>{data.description}</p>
+            {data.details.map((paragraph) => <p>{paragraph}</p>)}
+          </div>
+          {data.linkSecondary && data.linkSecondaryLabel && (
+            <p class="work-links"><a href={data.linkSecondary} target="_blank" rel="noopener noreferrer">{data.linkSecondaryLabel}</a></p>
+          )}
+        </article>
+      </li>
+    ))}
+  </ol>
+  {work.length === 0 && <div class="empty-state"><h2>More to come.</h2><p>Work and projects will appear here.</p></div>}
+</BaseLayout>

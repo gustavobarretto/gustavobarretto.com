@@ -1,5 +1,12 @@
 {
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
-  "framework": "astro"
+  "framework": "astro",
+  "redirects": [
+    { "source": "/", "destination": "/work", "permanent": true },
+    { "source": "/projects", "destination": "/work", "permanent": true },
+    { "source": "/about", "destination": "/backstory", "permanent": true },
+    { "source": "/blog", "destination": "/devlogs", "permanent": true },
+    { "source": "/blog/:path*", "destination": "/devlogs/:path*", "permanent": true }
+  ]
 }
