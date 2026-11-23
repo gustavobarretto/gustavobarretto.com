@@ -1,0 +1,29 @@
+---
+import { render, type CollectionEntry } from "astro:content";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { categoryUrl, getDevlogLanguageLinks } from "@/lib/devlogs";
+import { sectionPath } from "@/i18n";
+import { messages } from "@/messages";
+
+interface Props { post: CollectionEntry<"devlogs">; }
+const { post } = Astro.props;
+const { locale } = post.data;
+const { nav, devlogs } = messages[locale];
+const index = sectionPath(locale, "devlogs");
+const alternates = await getDevlogLanguageLinks(post);
+const { Content } = await render(post);
+---
+<BaseLayout title={post.data.title} description={post.data.description} locale={locale} section="devlogs" alternates={alternates}>
+  <a href={index} class="breadcrumb">{nav.devlogs}</a>
+  <article>
+    <header class="article-header">
+      <div class="post-meta">
+        <time datetime={post.data.pubDate.toISOString()}>{post.data.pubDate.toLocaleDateString(locale, { year: "numeric", month: "long", day: "numeric", timeZone: "UTC" })}</time>
+        <span class="post-categories">{post.data.categories.map((category) => <a href={categoryUrl(locale, category)}>{category}</a>)}</span>
+      </div>
+      <h1 class="article-title">{post.data.title}</h1>
+    </header>
+    <div class="editorial-copy article-body"><Content /></div>
+  </article>
+  <a href={index} class="back-link">{devlogs.back}</a>
+</BaseLayout>

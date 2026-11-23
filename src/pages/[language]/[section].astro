@@ -1,0 +1,20 @@
+---
+import { DEFAULT_LOCALE, LOCALES, LANGUAGES, SECTIONS, type Locale, type Section } from "@/i18n";
+import WorkPage from "@/views/WorkPage.astro";
+import DevlogsPage from "@/views/DevlogsPage.astro";
+import BackstoryPage from "@/views/BackstoryPage.astro";
+
+export function getStaticPaths() {
+  return LOCALES.filter((locale) => locale !== DEFAULT_LOCALE).flatMap((locale) =>
+    SECTIONS.map((section) => ({
+      params: { language: LANGUAGES[locale].slug, section },
+      props: { locale, section },
+    })),
+  );
+}
+
+interface Props { locale: Locale; section: Section; }
+const { locale, section } = Astro.props;
+const Page = { work: WorkPage, devlogs: DevlogsPage, backstory: BackstoryPage }[section];
+---
+<Page locale={locale} />

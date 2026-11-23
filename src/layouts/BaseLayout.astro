@@ -1,13 +1,27 @@
 ---
-import { NAV_LINKS, SITE, SOCIALS } from "@/config";
+import { SITE, SOCIALS } from "@/config";
+import { DEFAULT_LOCALE, LANGUAGES, LOCALES, SECTIONS, localPath, sectionPath, type LanguageLinks, type Locale, type Section } from "@/i18n";
+import { messages } from "@/messages";
 import "../styles/global.css";
 
-interface Props { title: string; description?: string; }
-const { title, description = SITE.desc } = Astro.props;
-const pathname = Astro.url.pathname.replace(/\/$/, "") || "/";
+interface Props {
+  title: string;
+  description?: string;
+  locale?: Locale;
+  section?: Section;
+  alternates?: LanguageLinks;
+}
+
+const { title, locale = DEFAULT_LOCALE, section } = Astro.props;
+const copy = messages[locale];
+const description = Astro.props.description ?? copy.site;
+const alternates: LanguageLinks = Astro.props.alternates ?? (section
+  ? Object.fromEntries(LOCALES.map((language) => [language, sectionPath(language, section)]))
+  : {});
+const languageOrder = ["pt-BR", "es", "en"] as const;
 ---
 <!doctype html>
-<html lang={SITE.lang}>
+<html lang={locale}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -16,7 +30,12 @@ const pathname = Astro.url.pathname.replace(/\/$/, "") || "/";
     <title>{title ? `${title} · ${SITE.title}` : SITE.title}</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site)} />
-    <link rel="alternate" type="application/rss+xml" title="Gustavo Barretto — Devlogs" href="/rss.xml" />
+    {LOCALES.map((language) => {
+      const path = alternates[language];
+      return path && <link rel="alternate" hreflang={language} href={new URL(path, SITE.website)} />;
+    })}
+    {alternates.en && <link rel="alternate" hreflang="x-default" href={new URL(alternates.en, SITE.website)} />}
+    <link rel="alternate" type="application/rss+xml" title={`${SITE.title} — ${copy.nav.devlogs}`} href={localPath(locale, "/rss.xml")} />
     <script is:inline>
       try {
         document.documentElement.classList.toggle("dark", localStorage.getItem("theme") === "dark");
@@ -24,22 +43,44 @@ const pathname = Astro.url.pathname.replace(/\/$/, "") || "/";
     </script>
   </head>
   <body>
-    <a class="skip-link" href="#main-content">Skip to content</a>
+    <a class="skip-link" href="#main-content">{copy.skip}</a>
     <div class="site-shell">
       <header class="site-header">
         <div class="site-header-inner site-width">
-          <a class="wordmark" href="/" aria-label="Gustavo Barretto — Home">
+          <a class="wordmark" href={locale === DEFAULT_LOCALE ? "/" : sectionPath(locale, "devlogs")} aria-label={`${SITE.title} — ${copy.home}`}>
             <span class="monogram" aria-hidden="true">GB</span>
             <span>Gustavo Barretto</span>
           </a>
-          <nav class="main-nav" aria-label="Main navigation">
-            {NAV_LINKS.map((link) => (
-              <a href={link.href} aria-current={pathname === link.href || pathname.startsWith(`${link.href}/`) ? "page" : undefined}>{link.label}</a>
+          <nav class="main-nav" aria-label={copy.navigation}>
+            {SECTIONS.map((item) => (
+              <a href={sectionPath(locale, item)} aria-current={section === item ? "page" : undefined}>{copy.nav[item]}</a>
             ))}
           </nav>
-          <button type="button" id="theme-toggle" aria-label="Switch to dark mode" aria-pressed="false">
-            <span class="theme-swatch" aria-hidden="true"></span><span id="theme-label">Dark mode</span>
-          </button>
+          <div class="header-controls">
+            <nav class="language-switcher" aria-label={copy.language}>
+              {languageOrder.map((language) => (
+                <a
+                  href={alternates[language] ?? sectionPath(language, section ?? "devlogs")}
+                  hreflang={language}
+                  lang={language}
+                  aria-label={LANGUAGES[language].name}
+                  aria-current={language === locale ? "true" : undefined}
+                >{LANGUAGES[language].label}</a>
+              ))}
+            </nav>
+            <button
+              type="button"
+              id="theme-toggle"
+              aria-label={copy.enableDark}
+              aria-pressed="false"
+              data-dark-label={copy.dark}
+              data-light-label={copy.light}
+              data-enable-dark={copy.enableDark}
+              data-enable-light={copy.enableLight}
+            >
+              <span class="theme-swatch" aria-hidden="true"></span><span id="theme-label">{copy.dark}</span>
+            </button>
+          </div>
         </div>
       </header>
       <main id="main-content" tabindex="-1" class="main-content site-width">
@@ -48,9 +89,9 @@ const pathname = Astro.url.pathname.replace(/\/$/, "") || "/";
       <footer class="site-footer site-width">
         <div class="site-footer-inner">
           <small>© {new Date().getFullYear()} Gustavo Barretto</small>
-          <ul class="social-links" aria-label="Find me elsewhere">
+          <ul class="social-links" aria-label={copy.socials}>
             {SOCIALS.map((social) => (
-              <li><a href={social.href} target={social.icon === "mail" ? undefined : "_blank"} rel={social.icon === "mail" ? undefined : "noopener noreferrer"}>{social.name === "Twitter" ? "X" : social.name}</a></li>
+              <li><a href={social.href} target={social.icon === "mail" ? undefined : "_blank"} rel={social.icon === "mail" ? undefined : "noopener noreferrer"}>{social.icon === "mail" ? copy.email : social.name === "Twitter" ? "X" : social.name}</a></li>
             ))}
           </ul>
         </div>
@@ -61,10 +102,11 @@ const pathname = Astro.url.pathname.replace(/\/$/, "") || "/";
       const label = document.getElementById("theme-label");
       function updateThemeButton() {
         const dark = document.documentElement.classList.contains("dark");
-        toggle?.setAttribute("aria-pressed", String(dark));
-        toggle?.setAttribute("aria-label", `Switch to ${dark ? "light" : "dark"} mode`);
+        if (!toggle) return;
+        toggle.setAttribute("aria-pressed", String(dark));
+        toggle.setAttribute("aria-label", (dark ? toggle.dataset.enableLight : toggle.dataset.enableDark) ?? "");
         document.querySelector('meta[name="theme-color"]')?.setAttribute("content", dark ? "#1a2421" : "#f6f3eb");
-        if (label) label.textContent = dark ? "Light mode" : "Dark mode";
+        if (label) label.textContent = (dark ? toggle.dataset.lightLabel : toggle.dataset.darkLabel) ?? "";
       }
       updateThemeButton();
       toggle?.addEventListener("click", () => {

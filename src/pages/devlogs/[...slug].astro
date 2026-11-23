@@ -1,26 +1,17 @@
 ---
-import { render, type CollectionEntry } from "astro:content";
-import BaseLayout from "@/layouts/BaseLayout.astro";
-import { categoryUrl, getPublishedDevlogs } from "@/lib/devlogs";
+import type { CollectionEntry } from "astro:content";
+import { DEFAULT_LOCALE } from "@/i18n";
+import { getPublishedDevlogs } from "@/lib/devlogs";
+import DevlogPage from "@/views/DevlogPage.astro";
 
 export async function getStaticPaths() {
-  return (await getPublishedDevlogs()).map((post) => ({ params: { slug: post.id }, props: { post } }));
+  return (await getPublishedDevlogs(DEFAULT_LOCALE)).map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
 }
+
 interface Props { post: CollectionEntry<"devlogs">; }
 const { post } = Astro.props;
-const { Content } = await render(post);
 ---
-<BaseLayout title={post.data.title} description={post.data.description}>
-  <a href="/devlogs" class="breadcrumb">Devlogs</a>
-  <article>
-    <header class="article-header">
-      <div class="post-meta">
-        <time datetime={post.data.pubDate.toISOString()}>{post.data.pubDate.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric", timeZone: "UTC" })}</time>
-        <span class="post-categories">{post.data.categories.map((category) => <a href={categoryUrl(category)}>{category}</a>)}</span>
-      </div>
-      <h1 class="article-title">{post.data.title}</h1>
-    </header>
-    <div class="editorial-copy article-body"><Content /></div>
-  </article>
-  <a href="/devlogs" class="back-link">Back to devlogs</a>
-</BaseLayout>
+<DevlogPage post={post} />

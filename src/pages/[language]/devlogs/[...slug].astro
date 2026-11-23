@@ -1,0 +1,18 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { DEFAULT_LOCALE, LANGUAGES } from "@/i18n";
+import { getPublishedDevlogs } from "@/lib/devlogs";
+import DevlogPage from "@/views/DevlogPage.astro";
+
+export async function getStaticPaths() {
+  const posts = await getPublishedDevlogs();
+  return posts.filter(({ data }) => data.locale !== DEFAULT_LOCALE).map((post) => ({
+    params: { language: LANGUAGES[post.data.locale].slug, slug: post.id },
+    props: { post },
+  }));
+}
+
+interface Props { post: CollectionEntry<"devlogs">; }
+const { post } = Astro.props;
+---
+<DevlogPage post={post} />

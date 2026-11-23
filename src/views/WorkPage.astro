@@ -1,0 +1,91 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import WorkHighlights from "@/components/WorkHighlights.astro";
+import { SITE } from "@/config";
+import { DEFAULT_LOCALE, sectionPath, type Locale } from "@/i18n";
+import { messages } from "@/messages";
+import { getCollection } from "astro:content";
+
+interface Props { locale?: Locale; }
+const { locale = DEFAULT_LOCALE } = Astro.props;
+const { nav, work: copy } = messages[locale];
+
+const work = (await getCollection("work"))
+  .sort((a, b) => {
+    const firstDate = a.data.date?.valueOf() ?? Number.NEGATIVE_INFINITY;
+    const secondDate = b.data.date?.valueOf() ?? Number.NEGATIVE_INFINITY;
+    return firstDate === secondDate ? a.id.localeCompare(b.id) : secondDate - firstDate;
+  })
+  .map(({ data }) => ({
+    ...data,
+    ...(locale === DEFAULT_LOCALE ? undefined : data.translations?.[locale]),
+  }));
+---
+<BaseLayout title={nav.work} description={copy.description} locale={locale} section="work">
+  <header class="profile">
+    <div class="profile-name">
+      <p class="profile-role">{copy.role}</p>
+      <h1>{SITE.author}</h1>
+    </div>
+    <div class="profile-intro">
+      <p>{copy.intro}</p>
+      <a href={sectionPath(locale, "backstory")}>{copy.biography}</a>
+    </div>
+  </header>
+
+  <section class="work-section" aria-labelledby="work-heading">
+    <h2 class="section-heading" id="work-heading">{nav.work}</h2>
+    <ol class="work-list">
+      {work.map((data) => (
+        <li class="work-entry">
+          <article>
+            <div class="work-row">
+              <div class="work-meta">
+                {data.period && <p class="work-period">{data.period}</p>}
+                <p class="work-organization">
+                  {data.organizationUrl ? (
+                    <a href={data.organizationUrl} target="_blank" rel="noopener noreferrer">{data.organization}</a>
+                  ) : data.organization}
+                </p>
+                <p class="work-kind">{copy[data.kind]}</p>
+              </div>
+              <div>
+                <h3 class="work-title">
+                  {data.link ? <a href={data.link} target="_blank" rel="noopener noreferrer">{data.role ?? data.title}</a> : data.role ?? data.title}
+                </h3>
+                <div class="editorial-copy">
+                  <p>{data.description}</p>
+                  {data.details.map((paragraph) => <p>{paragraph}</p>)}
+                  <WorkHighlights highlights={data.highlights} />
+                </div>
+                {data.linkSecondary && data.linkSecondaryLabel && (
+                  <p class="work-links"><a href={data.linkSecondary} target="_blank" rel="noopener noreferrer">{data.linkSecondaryLabel}</a></p>
+                )}
+              </div>
+            </div>
+            {data.initiatives.length > 0 && (
+              <ul class="work-initiatives">
+                {data.initiatives.map((initiative) => (
+                  <li class="work-row work-initiative">
+                    <div class="work-submeta">
+                      {initiative.period && <p class="work-period">{initiative.period}</p>}
+                      <h4 class="work-subtitle">{initiative.title}</h4>
+                    </div>
+                    <div class="editorial-copy">
+                      <p>{initiative.description}</p>
+                      <WorkHighlights highlights={initiative.highlights} />
+                      {initiative.reference && (
+                        <p class="work-links"><a href={initiative.reference.url}>{initiative.reference.label}</a></p>
+                      )}
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </article>
+        </li>
+      ))}
+    </ol>
+    {work.length === 0 && <p class="empty-state">{copy.empty}</p>}
+  </section>
+</BaseLayout>

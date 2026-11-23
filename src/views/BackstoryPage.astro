@@ -1,0 +1,24 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { DEFAULT_LOCALE, type Locale } from "@/i18n";
+import { messages } from "@/messages";
+
+interface Props { locale?: Locale; }
+const { locale = DEFAULT_LOCALE } = Astro.props;
+const { nav, work, backstory } = messages[locale];
+---
+<BaseLayout title={nav.backstory} description={backstory.description} locale={locale} section="backstory">
+  <h1 class="section-heading">{nav.backstory}</h1>
+  <div class="backstory-layout">
+    <img src="/avatar.jpg" alt="Gustavo Barretto" width="144" height="176" class="backstory-photo" />
+    <div class="editorial-copy article-body">
+      <p>{work.intro}</p>
+      <p>
+        {backstory.job} <a href="https://x.com/mercadolibre" target="_blank" rel="noopener noreferrer">@mercadolibre</a>, {backstory.platform}
+      </p>
+      <p>
+        {backstory.background}
+      </p>
+    </div>
+  </div>
+</BaseLayout>

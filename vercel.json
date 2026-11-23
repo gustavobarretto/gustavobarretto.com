@@ -4,6 +4,8 @@
   "framework": "astro",
   "redirects": [
     { "source": "/", "destination": "/devlogs", "permanent": true },
+    { "source": "/pt-br", "destination": "/pt-br/devlogs", "permanent": true },
+    { "source": "/es", "destination": "/es/devlogs", "permanent": true },
     { "source": "/projects", "destination": "/work", "permanent": true },
     { "source": "/about", "destination": "/backstory", "permanent": true },
     { "source": "/blog", "destination": "/devlogs", "permanent": true },

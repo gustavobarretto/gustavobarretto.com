@@ -6,3 +6,22 @@ link: "https://slicefair.io/"
 linkSecondary: "https://www.behance.net/gallery/209248537/Slicefair-App-Divisao-de-Despesas-Brand-Identity?locale=pt_BR"
 linkSecondaryLabel: "Brand identity on Behance"
 logo: "/slicefair-logo.png"
+translations:
+  pt-BR:
+    title: Slicefair
+    description: >-
+      Estou desenvolvendo o Slicefair, um conjunto de produtos que aproxima
+      pessoas e simplifica rotinas. O Mamão ajuda casais a compartilhar momentos
+      e organizar a vida a dois. O Anamnese usa IA para transformar gravações
+      de consultas em transcrições e registros clínicos estruturados para
+      revisão por profissionais de saúde.
+    linkSecondaryLabel: "Identidade visual no Behance"
+  es:
+    title: Slicefair
+    description: >-
+      Estoy desarrollando Slicefair, un conjunto de productos que acerca a las
+      personas y simplifica las rutinas. Mamão ayuda a las parejas a compartir
+      momentos y organizar su vida en común. Anamnese usa IA para convertir
+      grabaciones de consultas en transcripciones y notas clínicas
+      estructuradas para que las revisen profesionales de la salud.
+    linkSecondaryLabel: "Identidad visual en Behance"

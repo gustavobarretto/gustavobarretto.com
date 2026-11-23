@@ -12,6 +12,8 @@ export default defineConfig({
     "/about": "/backstory",
     "/projects": "/work",
     "/blog": "/devlogs",
+    "/pt-br": "/pt-br/devlogs",
+    "/es": "/es/devlogs",
   },
   integrations: [
     mdx(),
@@ -19,7 +21,7 @@ export default defineConfig({
     sitemap({
       filter: (page) => {
         const path = new URL(page).pathname.replace(/\/$/, "") || "/";
-        return !["/", "/about", "/projects", "/blog"].includes(path) && !path.startsWith("/blog/");
+        return !["/", "/about", "/projects", "/blog", "/pt-br", "/es"].includes(path) && !path.startsWith("/blog/");
       },
       serialize: (item) => {
         const url = item.url;
