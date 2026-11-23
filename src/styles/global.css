@@ -159,7 +159,7 @@
 .profile-intro { padding-inline-start: clamp(1.5rem, 4vw, 3rem); border-inline-start: 1px solid var(--border); }
 .profile-intro p { max-width: 31ch; margin: 0 0 .75rem; }
 
-.profile-intro a, .work-links a, .editorial-copy a, .back-link, .breadcrumb {
+.profile-intro a, .work-organization a, .work-links a, .editorial-copy a, .back-link, .breadcrumb {
   color: var(--highlight);
   text-decoration: underline;
   text-underline-offset: .2em;

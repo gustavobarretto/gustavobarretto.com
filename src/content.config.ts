@@ -13,24 +13,28 @@ const devlogs = defineCollection({
   }),
 });
 
+const workHighlights = z.array(z.object({
+  title: z.string(),
+  description: z.string(),
+})).default([]);
+
 const work = defineCollection({
   loader: glob({ pattern: "**/*.{yaml,yml,json}", base: "./src/content/work" }),
   schema: z.object({
     title: z.string(),
     description: z.string(),
     kind: z.enum(["experience", "project"]).default("project"),
-    period: z.string(),
+    period: z.string().optional(),
     organization: z.string(),
+    organizationUrl: z.string().url().optional(),
     role: z.string().optional(),
     details: z.array(z.string()).default([]),
+    highlights: workHighlights,
     initiatives: z.array(z.object({
       title: z.string(),
       period: z.string().optional(),
       description: z.string(),
-      highlights: z.array(z.object({
-        title: z.string(),
-        description: z.string(),
-      })).default([]),
+      highlights: workHighlights,
       reference: z.object({
         label: z.string(),
         url: z.string().url(),
@@ -40,7 +44,7 @@ const work = defineCollection({
     logo: z.string().optional(),
     linkSecondary: z.string().url().optional(),
     linkSecondaryLabel: z.string().optional(),
-    date: z.coerce.date(),
+    date: z.coerce.date().optional(),
   }),
 });
 

@@ -1,10 +1,15 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import WorkHighlights from "@/components/WorkHighlights.astro";
 import { PROFILE, SITE } from "@/config";
 import { getCollection } from "astro:content";
 
 const work = (await getCollection("work"))
-  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf() || a.id.localeCompare(b.id));
+  .sort((a, b) => {
+    const firstDate = a.data.date?.valueOf() ?? Number.NEGATIVE_INFINITY;
+    const secondDate = b.data.date?.valueOf() ?? Number.NEGATIVE_INFINITY;
+    return firstDate === secondDate ? a.id.localeCompare(b.id) : secondDate - firstDate;
+  });
 ---
 <BaseLayout title="Work" description="Selected work, professional experience, and personal projects by Gustavo Barretto.">
   <header class="profile">
@@ -26,8 +31,12 @@ const work = (await getCollection("work"))
           <article>
             <div class="work-row">
               <div class="work-meta">
-                <p class="work-period">{data.period}</p>
-                <p class="work-organization">{data.organization}</p>
+                {data.period && <p class="work-period">{data.period}</p>}
+                <p class="work-organization">
+                  {data.organizationUrl ? (
+                    <a href={data.organizationUrl} target="_blank" rel="noopener noreferrer">{data.organization}</a>
+                  ) : data.organization}
+                </p>
                 <p class="work-kind">{data.kind === "experience" ? "Experience" : "Personal project"}</p>
               </div>
               <div>
@@ -37,6 +46,7 @@ const work = (await getCollection("work"))
                 <div class="editorial-copy">
                   <p>{data.description}</p>
                   {data.details.map((paragraph) => <p>{paragraph}</p>)}
+                  <WorkHighlights highlights={data.highlights} />
                 </div>
                 {data.linkSecondary && data.linkSecondaryLabel && (
                   <p class="work-links"><a href={data.linkSecondary} target="_blank" rel="noopener noreferrer">{data.linkSecondaryLabel}</a></p>
@@ -53,16 +63,7 @@ const work = (await getCollection("work"))
                     </div>
                     <div class="editorial-copy">
                       <p>{initiative.description}</p>
-                      {initiative.highlights.length > 0 && (
-                        <dl class="work-highlights">
-                          {initiative.highlights.map((highlight) => (
-                            <div>
-                              <dt>{highlight.title}</dt>
-                              <dd>{highlight.description}</dd>
-                            </div>
-                          ))}
-                        </dl>
-                      )}
+                      <WorkHighlights highlights={initiative.highlights} />
                       {initiative.reference && (
                         <p class="work-links"><a href={initiative.reference.url}>{initiative.reference.label}</a></p>
                       )}

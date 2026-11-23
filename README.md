@@ -49,11 +49,12 @@ details:
 link: https://example.com
 ```
 
-Required fields: `title`, `organization`, `period`, `date`, and `description`.
-Optional fields: `kind` (defaults to `project`), `role`, `details`, `link`,
-`logo`, `linkSecondary`, and `linkSecondaryLabel`. The `role` field is the
-right-hand heading; when absent, `title` is used. `period` is a display label
-and may contain a year, range, or "Present". `date` only controls ordering.
+Required fields: `title`, `organization`, and `description`. Optional fields
+include `period`, `date`, `organizationUrl`, `kind` (defaults to `project`),
+`role`, `details`, `highlights`, `link`, `logo`, `linkSecondary`, and
+`linkSecondaryLabel`. The `role` field is the right-hand heading; when absent,
+`title` is used. `period` is the displayed date label. `date` controls ordering,
+with undated entries last. Each highlight has a `title` and `description`.
 
 Use `initiatives` to group several contributions under one employer or project.
 Each initiative has a `title` and `description`, plus an optional `period`,
