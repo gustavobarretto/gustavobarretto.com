@@ -55,6 +55,11 @@ Optional fields: `kind` (defaults to `project`), `role`, `details`, `link`,
 right-hand heading; when absent, `title` is used. `period` is a display label
 and may contain a year, range, or "Present". `date` only controls ordering.
 
+Use `initiatives` to group several contributions under one employer or project.
+Each initiative has a `title` and `description`, plus an optional `period`,
+`highlights` (each with a `title` and `description`), and a `reference` with
+`label` and `url`. Initiatives are displayed in the order they appear in YAML.
+
 ## Devlogs
 
 Add Markdown or MDX files in `src/content/devlogs/`. There are intentionally no

@@ -23,21 +23,53 @@ const work = (await getCollection("work"))
     <ol class="work-list">
       {work.map(({ data }) => (
         <li class="work-entry">
-          <div class="work-meta">
-            <p class="work-period">{data.period}</p>
-            <p class="work-organization">{data.organization}</p>
-            <p class="work-kind">{data.kind === "experience" ? "Experience" : "Personal project"}</p>
-          </div>
           <article>
-            <h3 class="work-title">
-              {data.link ? <a href={data.link} target="_blank" rel="noopener noreferrer">{data.role ?? data.title}</a> : data.role ?? data.title}
-            </h3>
-            <div class="editorial-copy">
-              <p>{data.description}</p>
-              {data.details.map((paragraph) => <p>{paragraph}</p>)}
+            <div class="work-row">
+              <div class="work-meta">
+                <p class="work-period">{data.period}</p>
+                <p class="work-organization">{data.organization}</p>
+                <p class="work-kind">{data.kind === "experience" ? "Experience" : "Personal project"}</p>
+              </div>
+              <div>
+                <h3 class="work-title">
+                  {data.link ? <a href={data.link} target="_blank" rel="noopener noreferrer">{data.role ?? data.title}</a> : data.role ?? data.title}
+                </h3>
+                <div class="editorial-copy">
+                  <p>{data.description}</p>
+                  {data.details.map((paragraph) => <p>{paragraph}</p>)}
+                </div>
+                {data.linkSecondary && data.linkSecondaryLabel && (
+                  <p class="work-links"><a href={data.linkSecondary} target="_blank" rel="noopener noreferrer">{data.linkSecondaryLabel}</a></p>
+                )}
+              </div>
             </div>
-            {data.linkSecondary && data.linkSecondaryLabel && (
-              <p class="work-links"><a href={data.linkSecondary} target="_blank" rel="noopener noreferrer">{data.linkSecondaryLabel}</a></p>
+            {data.initiatives.length > 0 && (
+              <ul class="work-initiatives">
+                {data.initiatives.map((initiative) => (
+                  <li class="work-row work-initiative">
+                    <div class="work-submeta">
+                      {initiative.period && <p class="work-period">{initiative.period}</p>}
+                      <h4 class="work-subtitle">{initiative.title}</h4>
+                    </div>
+                    <div class="editorial-copy">
+                      <p>{initiative.description}</p>
+                      {initiative.highlights.length > 0 && (
+                        <dl class="work-highlights">
+                          {initiative.highlights.map((highlight) => (
+                            <div>
+                              <dt>{highlight.title}</dt>
+                              <dd>{highlight.description}</dd>
+                            </div>
+                          ))}
+                        </dl>
+                      )}
+                      {initiative.reference && (
+                        <p class="work-links"><a href={initiative.reference.url}>{initiative.reference.label}</a></p>
+                      )}
+                    </div>
+                  </li>
+                ))}
+              </ul>
             )}
           </article>
         </li>

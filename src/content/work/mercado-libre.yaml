@@ -1,0 +1,47 @@
+title: Internal Developer Platform
+organization: Mercado Libre
+period: "2022–2026"
+kind: experience
+date: 2026-01-01
+description: >-
+  I’ve been developing Mercado Libre’s internal developer platform (IDP) since
+  2022, building infrastructure services for engineers who develop and run
+  applications on Fury.
+initiatives:
+  - title: Configuration Service
+    period: "2022–2025"
+    description: >-
+      I helped build and operate a service that delivers business and
+      infrastructure configuration to Fury applications across roughly
+      200,000 machines. It helps teams apply Factor III of the Twelve-Factor
+      App by managing deployment configuration separately from application code.
+    reference:
+      label: "The Twelve-Factor App · III. Config"
+      url: https://12factor.net/config
+    highlights:
+      - title: "Backup and recovery"
+        description: >-
+          Set up automated backups across cloud providers and accounts to
+          protect data against ransomware and support recovery during outages.
+      - title: "Multicloud data plane"
+        description: >-
+          Built a data plane with service affinity and cross-cloud fallbacks
+          to deliver bootstrap configuration to around 200,000 machines
+          across AWS and Google Cloud.
+      - title: "Site isolation"
+        description: >-
+          Segmented the application end to end for specific sites, with
+          separate data and infrastructure for each.
+      - title: "Configuration rollout"
+        description: >-
+          Designed a distributed queue to deliver relatively static data as
+          files, propagating updates to nearly 200,000 machines within
+          about 30 seconds.
+      - title: "Control plane metadata"
+        description: >-
+          Helped make the Configuration Service the default way to pass
+          metadata between the control plane and the data plane.
+  - title: AI tools for developers
+    description: >-
+      Built Model Context Protocol (MCP) servers and automated harnesses so
+      engineers could use internal platform services from their AI tools.
