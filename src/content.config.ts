@@ -23,7 +23,7 @@ const workHighlights = z.array(z.object({
 
 const workText = z.object({
   title: z.string(),
-  description: z.string(),
+  description: z.string().optional(),
   period: z.string().optional(),
   role: z.string().optional(),
   details: z.array(z.string()).default([]),

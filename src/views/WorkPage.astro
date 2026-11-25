@@ -53,11 +53,13 @@ const work = (await getCollection("work"))
                 <h3 class="work-title">
                   {data.link ? <a href={data.link} target="_blank" rel="noopener noreferrer">{data.role ?? data.title}</a> : data.role ?? data.title}
                 </h3>
-                <div class="editorial-copy">
-                  <p>{data.description}</p>
-                  {data.details.map((paragraph) => <p>{paragraph}</p>)}
-                  <WorkHighlights highlights={data.highlights} />
-                </div>
+                {(data.description || data.details.length > 0 || data.highlights.length > 0) && (
+                  <div class="editorial-copy">
+                    {data.description && <p>{data.description}</p>}
+                    {data.details.map((paragraph) => <p>{paragraph}</p>)}
+                    <WorkHighlights highlights={data.highlights} />
+                  </div>
+                )}
                 {data.linkSecondary && data.linkSecondaryLabel && (
                   <p class="work-links"><a href={data.linkSecondary} target="_blank" rel="noopener noreferrer">{data.linkSecondaryLabel}</a></p>
                 )}

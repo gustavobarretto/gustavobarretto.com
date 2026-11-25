@@ -48,8 +48,8 @@ details:
 link: https://example.com
 ```
 
-Required fields: `title`, `organization`, and `description`. Optional fields
-include `period`, `date`, `organizationUrl`, `kind` (defaults to `project`),
+Required fields: `title` and `organization`. Optional fields include
+`description`, `period`, `date`, `organizationUrl`, `kind` (defaults to `project`),
 `role`, `details`, `highlights`, `link`, `logo`, `linkSecondary`, and
 `linkSecondaryLabel`. The `role` field is the right-hand heading; when absent,
 `title` is used. `period` is the displayed date label. `date` controls ordering,
