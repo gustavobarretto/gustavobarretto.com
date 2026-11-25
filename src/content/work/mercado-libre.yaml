@@ -38,13 +38,12 @@ highlights:
     description: >-
       Helped make the service the default way to pass metadata between the
       control plane and the data plane.
-linkSecondary: https://12factor.net/config
-linkSecondaryLabel: "The Twelve-Factor App · III. Config"
-initiatives:
   - title: AI tools for developers
     description: >-
       Built Model Context Protocol (MCP) servers and automated harnesses so
       engineers could use internal platform services from their AI tools.
+linkSecondary: https://12factor.net/config
+linkSecondaryLabel: "The Twelve-Factor App · III. Config"
 translations:
   pt-BR:
     title: Plataforma interna de desenvolvimento
@@ -84,13 +83,12 @@ translations:
         description: >-
           Ajudei a tornar o serviço o caminho padrão para a troca de
           metadados entre os planos de controle e de dados.
-    linkSecondaryLabel: "The Twelve-Factor App · III. Configuração"
-    initiatives:
       - title: Ferramentas de IA para desenvolvedores
         description: >-
           Criei servidores Model Context Protocol (MCP) e harnesses de
           automação para que as equipes de engenharia pudessem usar serviços
           da plataforma interna a partir das suas ferramentas de IA.
+    linkSecondaryLabel: "The Twelve-Factor App · III. Configuração"
   es:
     title: Plataforma interna de desarrollo
     period: "Desde 2022"
@@ -129,10 +127,9 @@ translations:
         description: >-
           Ayudé a convertir el servicio en la vía predeterminada para
           intercambiar metadatos entre los planos de control y de datos.
-    linkSecondaryLabel: "The Twelve-Factor App · III. Configuración"
-    initiatives:
       - title: Herramientas de IA para desarrolladores
         description: >-
           Creé servidores Model Context Protocol (MCP) y sistemas de
           automatización para que los equipos de ingeniería pudieran usar
           servicios de la plataforma interna desde sus herramientas de IA.
+    linkSecondaryLabel: "The Twelve-Factor App · III. Configuración"
